@@ -8,6 +8,6 @@ sealed class ProductsEvent extends Equatable {
 }
 
 class ProductsLoadedEvent extends Equatable {
-   @override
+  @override
   List<Object> get props => [];
 }

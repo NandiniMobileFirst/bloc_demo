@@ -1,15 +1,20 @@
-import 'package:bloc_demo/models/products_model.dart';
-import 'package:http/http.dart' as http;
+import 'package:bloc_demo/models/product/product.dart';
+import 'package:dio/dio.dart';
 
+class ProductsRepo {
+  final Dio _dio = Dio();
 
-class ProductsRepo{
-
- Future<List<ProductsModel>> getProducts() async {
-   var response = await http.get(Uri.parse("https://fakestoreapi.com/products"));
-     if (response.statusCode == 200) {
-       return (productsModelFromJson(response.body));
-     } else {
-       throw Exception("Failed to load products");
-     }
+  Future<List<Product>> getProducts() async {
+    try {
+      final response = await _dio.get("https://fakestoreapi.com/products");
+      
+      if (response.statusCode == 200) {
+        return buildProductListFromResponse(response.data);
+      } else {
+        throw Exception("Failed to load products");
+      }
+    } catch (e) {
+      throw Exception("Failed to load products: $e");
+    }
   }
 }
